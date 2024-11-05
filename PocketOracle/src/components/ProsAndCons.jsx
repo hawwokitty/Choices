@@ -1,32 +1,42 @@
 import React, { useState } from "react";
 
 function ProsAndCons(props) {
-  const choice = props.choice;
-  const [pros, setPros] = useState(0);
-  const [cons, setCons] = useState(0);
+  const { choiceData, updateProsAndCons } = props;
+  const [pros, setPros] = useState(choiceData.pros);
+  const [cons, setCons] = useState(choiceData.cons);
 
   const handleAddPros = () => {
-    setPros((prevPros) => prevPros + 1);
+    const updatedPros = pros + 1;
+    setPros(updatedPros);
+    updateProsAndCons(choiceData.id, updatedPros, cons);
   };
 
   const handleAddCons = () => {
-    setCons((prevCons) => prevCons + 1);
+    const updatedCons = cons + 1;
+    setCons(updatedCons);
+    updateProsAndCons(choiceData.id, pros, updatedCons);
   };
+
+  const resetProsAndCons = () => {
+    setPros(0);
+    setCons(0);
+    updateProsAndCons(choiceData.id, 0, 0);
+  };
+
   return (
     <>
       <p>Please enter how many pros and cons each choice has:</p>
-
       <div>
-        <p>{choice}</p>
+        <p>{choiceData.choice}</p>
         <div>
-          {pros}
+          Pros: {pros}
           <button onClick={handleAddPros}>add pros</button>
         </div>
         <div>
-          {cons}
+          Cons: {cons}
           <button onClick={handleAddCons}>add cons</button>
         </div>
-        <button>reset p&c</button>
+        <button onClick={resetProsAndCons}>reset p&c</button>
       </div>
     </>
   );

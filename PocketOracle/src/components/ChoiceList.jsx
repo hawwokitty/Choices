@@ -5,10 +5,9 @@ const ChoiceList = ({ choices, handleChoices }) => {
   return (
     <div>
       <Choices handleAddChoice={handleChoices} />
-      {choices.map((choice, index) => (
-        <p key={index}>{choice}</p>
-      ))}
-      <button onClick={() => handleChoices("")}>Add more +</button>
+      {/* {choices.map((choiceObj, index) => (
+        <p key={index}>{choiceObj.choice}</p>
+      ))} */}
     </div>
   );
 };
