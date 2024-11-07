@@ -6,6 +6,7 @@ import { useState } from "react";
 import ProsAndCons from "./components/ProsAndCons";
 import ChoiceList from "./components/ChoiceList";
 import AdvancedChoiceMaker from "./components/AdvancedChoiceMaker";
+import BasicChoiceMaker from "./components/BasicChoiceMaker";
 import { v4 as uuidv4 } from "uuid";
 
 import "./App.css";
@@ -13,6 +14,7 @@ import "./App.css";
 function App() {
   const [choices, setChoices] = useState([]);
   const [advanced, setAdvanced] = useState(false);
+  const [basic, setBasic] = useState(false);
 
   const handleChoices = (newChoice) => {
     const newChoiceObject = {
@@ -34,12 +36,15 @@ function App() {
 
   const setAdvancedState = () => {
     setAdvanced(true);
-  }
+  };
+  const setBasicState = () => {
+    setBasic(true);
+  };
 
   return (
     <>
       <button onClick={setAdvancedState}>Advanced</button>
-      <button>Coin flip</button>
+      <button onClick={setBasicState}>Coin flip</button>
       <ChoiceList choices={choices} handleChoices={handleChoices} />
       {advanced
         ? choices.map((item) => (
@@ -50,9 +55,10 @@ function App() {
             />
           ))
         : null}
-        {advanced ? ( <AdvancedChoiceMaker choices={choices}/>) : null}
+      {advanced ? <AdvancedChoiceMaker choices={choices} /> : null}
 
       <p>Picked choices: {choices.map((item) => item.choice).join(", ")}</p>
+      {basic ? <BasicChoiceMaker choices={choices} /> : null}
     </>
   );
 }

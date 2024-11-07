@@ -1,52 +1,62 @@
-import React, { useState, useEffect } from 'react'
-import CoinFlip from './FlipCoin/FlipCoin.jsx'
+import React, { useState, useEffect } from 'react';
+import FlipCoin from './FlipCoin/FlipCoin.jsx'
 
-const BasicChoiceMaker = (choices) => {
+const BasicChoiceMaker = ({choices}) => {
+    // console.log(choices)
     const [currentPairs, setCurrentPairs] = useState([]);
     const [nextRoundChoices, setNextRoundChoices] = useState(choices)
 
     useEffect(() => {
+        // console.log("useEffect: nextRoundChoices" + nextRoundChoices[0].choice)
         pairChoices(nextRoundChoices);
+        
     }, [nextRoundChoices]);
 
     const pairChoices = (choicesArray) => {
         const pairs = [];
+        // console.log("choiceArray:" + choicesArray)
         for (let i = 0; i < choicesArray.length; i += 2) {
             if (choicesArray[i + 1]) {
-                pairs.push(choicesArray[i], choicesArray[i + 1])
+                pairs.push([choicesArray[i], choicesArray[i + 1]]);
+                // console.log("if: " + pairs)
             } else {
                 pairs.push(choicesArray[i])
+                // console.log("else: " + pairs)
             }
         }
         setCurrentPairs(pairs)
+        // console.log("pairs are:", pairs)
     }
 
     const handleWinner = (winner, loser) => {
-        setNextRoundChoices((prev) => [...prev, winner]);
-        if (loser) {
-
+        setNextRoundChoices((prev) => [...prev.filter(choice => choice !== loser), winner]);
+        
+        if (nextRoundChoices.length === 2) {
+            if (currentPairs.length === 1 && currentPairs[0].length === 1) {
+                console.log("the overall winner is: ", winner.choice);
+            } else {
+                pairChoices(nextRoundChoices)
+            }
         }
-
-        if (currentPairs.length === 1 && currentPairs[0].length === 1) {
-            return <div>The winner is {currentPairs[0][0].choices}!</div>
-        }
-    }
+    };
 
     return (
         <div>
-           {currentPairs.map((pair, index) => (
-            <div key={index}>
-                {pair.length === 2 ? (
-                    <CoinFlip 
-                        choice1={pair[0]}
-                        choice2={pair[1]}
+           
+            <div key="coinflip">
+                {currentPairs.length === 2 ? (
+                    <FlipCoin
+                        choice1={currentPairs[0][0]}
+                        choice2={currentPairs[0][1]}
                         onDecision={(winner, loser) => handleWinner(winner, loser)}
                     />
                 ) : (
-                    <p>{pair[0].choices} automatically advances to the next round</p>
+                    <p>{currentPairs[0]} automatically advances to the next round</p>
                 )}
+                {/* {console.log(currentPairs[0][0])} */}
             </div>
-           ))} 
+            
+           <p>test</p>
         </div>
     );
 };

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function AdvancedChoiceMaker({ choices }) {
+  const [roundChoices, setRoundChoices] = useState([]);
+  const [winner, setWinner] = useState(null);
 
+  
 
     
   return (
